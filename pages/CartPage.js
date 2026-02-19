@@ -6,19 +6,21 @@ class CartPage {
   constructor(page) {
     this.page = page;
     
-    // Locators
-    this.cartItems = '//tr[@class="cartItem"]';
-    this.cartItemName = '[class="product-name"]';
-    this.cartItemPrice = '[class="product-price"]';
-    this.cartItemQuantity = '[class="quantity"]';
-    this.removeButton = '[class="delete"]';
-    this.subtotalAmount = '//span[@class="cartTotal"]';
-    this.proceedButton = '//button[text()="PROCEED TO CHECKOUT"]';
-    this.continueShoppingButton = '//button[text()="Continue Shopping"]';
-    this.emptyCartMessage = '[class*="empty"]';
-    this.cartBadge = '[class*="badge"]';
-    this.increaseQuantity = '[class*="increment"]';
-    this.decreaseQuantity = '[class*="decrement"]';
+    // Locators for rahulshettyacademy.com/seleniumPractise cart page
+    this.cartItems = 'tr.cartItem';
+    this.cartItemName = '.product-name';
+    this.cartItemPrice = '.product-price';
+    this.cartItemQuantity = 'input[type="number"]';
+    this.removeButton = 'button:has-text("Remove")';
+    this.subtotalAmount = '.totAmt';
+    this.proceedButton = 'button:has-text("PROCEED TO CHECKOUT")';
+    this.continueShoppingButton = 'button:has-text("Continue Shopping")';
+    this.emptyCartMessage = '.empty-message';
+    this.cartBadge = '.cart-badge';
+    this.increaseQuantity = 'button.increment';
+    this.decreaseQuantity = 'button.decrement';
+    this.promoCodeInput = 'input[placeholder="Promo code"]';
+    this.applyPromoButton = 'button:has-text("Apply")';
   }
 
   /**

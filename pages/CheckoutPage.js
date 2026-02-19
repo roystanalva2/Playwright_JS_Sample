@@ -6,28 +6,30 @@ class CheckoutPage {
   constructor(page) {
     this.page = page;
     
-    // Locators
-    this.firstNameInput = '[placeholder="First name"]';
-    this.lastNameInput = '[placeholder="Last name"]';
-    this.emailInput = '[placeholder="Email address"]';
-    this.phoneInput = '[placeholder="Phone number"]';
-    this.addressInput = '[placeholder="Address"]';
-    this.countryInput = '[placeholder="Country"]';
-    this.stateInput = '[placeholder="State"]';
-    this.zipInput = '[placeholder="Zip code"]';
-    this.placeOrderButton = '//button[text()="Place Order"]';
-    this.paymentMethodDropdown = '#payment-method';
-    this.cardNumberInput = '[placeholder="Card number"]';
-    this.expiryInput = '[placeholder="MM/YY"]';
-    this.cvvInput = '[placeholder="CVV"]';
-    this.termsCheckbox = '[class*="terms"]//input';
-    this.errorMessage = '[class*="error"]';
-    this.successMessage = '[class*="success"]';
-    this.orderSummary = '[class*="summary"]';
-    this.totalAmount = '[class*="total"]';
-    this.promoCodeInput = '#promo-code';
-    this.applyPromoButton = '//button[text()="Apply"]';
-    this.discountAmount = '[class*="discount"]';
+    // Locators for rahulshettyacademy.com/seleniumPractise checkout
+    this.firstNameInput = 'input[placeholder="First name"]';
+    this.lastNameInput = 'input[placeholder="Last name"]';
+    this.emailInput = 'input[placeholder="Email address"]';
+    this.phoneInput = 'input[placeholder="Phone number"]';
+    this.addressInput = 'textarea[placeholder="Address"]';
+    this.countrySelect = 'select[name="country"]';
+    this.stateInput = 'input[placeholder="State"]';
+    this.zipInput = 'input[placeholder="Zip code"]';
+    this.placeOrderButton = 'button:has-text("Place Order")';
+    this.paymentMethodSelect = 'select[name="payment"]';
+    this.cardNumberInput = 'input[placeholder="Card number"]';
+    this.expiryInput = 'input[placeholder="MM/YY"]';
+    this.cvvInput = 'input[placeholder="CVV"]';
+    this.termsCheckbox = 'input[type="checkbox"][name="terms"]';
+    this.termsLabel = 'label:has-text("I agree")';
+    this.errorMessage = '.error-message';
+    this.successMessage = '.success-message';
+    this.orderSummary = '.order-summary';
+    this.totalAmount = '.grand-total';
+    this.promoCodeInput = 'input[placeholder="Promo code"]';
+    this.applyPromoButton = 'button:has-text("Apply")';
+    this.discountAmount = '.discount-amount';
+    this.pageTitle = 'h1';
   }
 
   /**
@@ -50,7 +52,7 @@ class CheckoutPage {
       await this.page.locator(this.addressInput).fill(userData.address);
     }
     if (userData.country) {
-      await this.page.locator(this.countryInput).fill(userData.country);
+      await this.page.locator(this.countrySelect).selectOption(userData.country);
     }
     if (userData.state) {
       await this.page.locator(this.stateInput).fill(userData.state);
@@ -64,7 +66,7 @@ class CheckoutPage {
    * Select payment method
    */
   async selectPaymentMethod(method) {
-    await this.page.locator(this.paymentMethodDropdown).selectOption(method);
+    await this.page.locator(this.paymentMethodSelect).selectOption(method);
   }
 
   /**

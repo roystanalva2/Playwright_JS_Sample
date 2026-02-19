@@ -6,23 +6,23 @@ class LoginPage {
   constructor(page) {
     this.page = page;
     
-    // Locators
-    this.usernameInput = '#username';
-    this.passwordInput = '#password';
-    this.loginButton = '//button[text()="Login"]';
-    this.forgotPasswordLink = '//a[text()="Forgot Password"]';
-    this.signupLink = '//a[text()="Sign up"]';
-    this.loginTitle = '//h1[contains(text(), "Login")]';
-    this.errorMessage = '[class*="error"]';
-    this.rememberMeCheckbox = '[type="checkbox"]';
-    this.loginSuccessMessage = '[class*="success"]';
+    // Locators for rahulshettyacademy login (if applicable)
+    this.usernameInput = 'input[name="username"]';
+    this.passwordInput = 'input[name="password"]';
+    this.loginButton = 'button:has-text("Login")';
+    this.forgotPasswordLink = 'a:has-text("Forgot Password")';
+    this.signupLink = 'a:has-text("Sign up")';
+    this.loginTitle = 'h1';
+    this.errorMessage = '.error-message';
+    this.rememberMeCheckbox = 'input[type="checkbox"]';
+    this.loginSuccessMessage = '.success-message';
   }
 
   /**
    * Navigate to login page
    */
   async goto() {
-    await this.page.goto('/#/documents');
+    await this.page.goto('/');
     await this.page.waitForLoadState('networkidle');
   }
 

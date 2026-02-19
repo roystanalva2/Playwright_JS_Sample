@@ -6,22 +6,22 @@ class HomePage {
   constructor(page) {
     this.page = page;
     
-    // Locators
-    this.productList = '//div[@class="product"]';
-    this.addToCartButtons = '//button[text()="ADD TO CART"]';
-    this.cartButton = '[aria-label="Cart Icone"]';
-    this.searchInput = '#search-text';
-    this.filterButtons = '[class="filter"]';
-    this.productTitle = '//h4[@class="product-name"]';
-    this.productPrice = '//span[@class="product-price"]';
-    this.increaseQuantity = '[class="increment"]';
-    this.decreaseQuantity = '[class="decrement"]';
-    this.quantityInput = '[type="number"]';
-    this.logoButton = '[class*="logo"]';
-    this.productsCount = '//div[@class="product"]';
-    this.loadingSpinner = '[class*="loading"]';
-    this.errorMessage = '[class*="error"]';
-    this.paginationButtons = '[class*="pagination"]';
+    // Locators for rahulshettyacademy.com/seleniumPractise
+    this.productCard = '.product';
+    this.addToCartButtons = 'button:has-text("ADD TO CART")';
+    this.cartButton = 'img[alt="Cart"]';
+    this.searchInput = 'input#search-text';
+    this.filterVegCheckbox = 'input[value="Veg"]';
+    this.productTitle = '.product-name';
+    this.productPrice = '.product-price';
+    this.increaseQuantity = '.increment';
+    this.decreaseQuantity = '.decrement';
+    this.quantityInput = 'input[type="number"]';
+    this.logoButton = 'a.logo';
+    this.productsCount = '.product';
+    this.loadingSpinner = '.loading';
+    this.errorMessage = '.error-message';
+    this.paginationButtons = '.pagination button';
   }
 
   /**
@@ -36,8 +36,8 @@ class HomePage {
    * Get all products on the page
    */
   async getProducts() {
-    await this.page.waitForSelector(this.productList);
-    const products = await this.page.locator(this.productList).all();
+    await this.page.waitForSelector(this.productCard);
+    const products = await this.page.locator(this.productCard).all();
     return products;
   }
 
@@ -45,7 +45,7 @@ class HomePage {
    * Get product count
    */
   async getProductCount() {
-    const products = await this.page.locator(this.productsCount).count();
+    const products = await this.page.locator(this.productCard).count();
     return products;
   }
 
@@ -82,7 +82,7 @@ class HomePage {
    * Click on product to view details
    */
   async clickProductByIndex(productIndex) {
-    const product = this.page.locator(this.productList).nth(productIndex);
+    const product = this.page.locator(this.productCard).nth(productIndex);
     await product.click();
     await this.page.waitForLoadState('networkidle');
   }
@@ -102,12 +102,26 @@ class HomePage {
     return await this.page.locator(this.productTitle).nth(productIndex).textContent();
   }
 
-  /**
-   * Go to cart
-   */
   async goToCart() {
-    await this.page.locator(this.cartButton).click();
-    await this.page.waitForLoadState('networkidle');
+    try {
+      await this.page.locator(this.cartButton).click();
+      await this.page.waitForLoadState('networkidle');
+    } catch (e) {
+      // Try alternative cart button locators
+      try {
+        await this.page.click('a[href*="cart"]');
+        await this.page.waitForLoadState('networkidle');
+      } catch (e2) {
+        // Try finding any link with cart-related text
+        try {
+          await this.page.locator('text=Cart').click();
+          await this.page.waitForLoadState('networkidle');
+        } catch (e3) {
+          console.error('Could not find cart button with any locator');
+          throw e3;
+        }
+      }
+    }
   }
 
   /**
@@ -162,7 +176,7 @@ class HomePage {
    * Check if product is visible
    */
   async isProductVisible(productIndex) {
-    const product = this.page.locator(this.productList).nth(productIndex);
+    const product = this.page.locator(this.productCard).nth(productIndex);
     return await product.isVisible();
   }
 
@@ -170,7 +184,7 @@ class HomePage {
    * Scroll to product
    */
   async scrollToProduct(productIndex) {
-    const product = this.page.locator(this.productList).nth(productIndex);
+    const product = this.page.locator(this.productCard).nth(productIndex);
     await product.scrollIntoViewIfNeeded();
   }
 
@@ -178,7 +192,7 @@ class HomePage {
    * Get visible products count
    */
   async getVisibleProductsCount() {
-    const products = await this.page.locator(this.productList).all();
+    const products = await this.page.locator(this.productCard).all();
     let visibleCount = 0;
     for (const product of products) {
       if (await product.isVisible()) {
