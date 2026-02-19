@@ -1,0 +1,94 @@
+{
+  "validUsers": [
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "phone": "1234567890",
+      "address": "123 Main Street",
+      "country": "USA",
+      "state": "California",
+      "zipCode": "90001"
+    },
+    {
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "jane.smith@example.com",
+      "phone": "0987654321",
+      "address": "456 Oak Avenue",
+      "country": "USA",
+      "state": "New York",
+      "zipCode": "10001"
+    },
+    {
+      "firstName": "Robert",
+      "lastName": "Johnson",
+      "email": "robert.j@example.com",
+      "phone": "5555555555",
+      "address": "789 Pine Road",
+      "country": "USA",
+      "state": "Texas",
+      "zipCode": "75001"
+    }
+  ],
+  "invalidUsers": [
+    {
+      "firstName": "",
+      "lastName": "Doe",
+      "email": "invalid@example.com",
+      "issue": "Missing firstName"
+    },
+    {
+      "firstName": "John",
+      "lastName": "",
+      "email": "invalid@example.com",
+      "issue": "Missing lastName"
+    },
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "invalid-email",
+      "issue": "Invalid email format"
+    }
+  ],
+  "paymentMethods": [
+    {
+      "name": "Credit Card",
+      "cardNumber": "4111111111111111",
+      "expiry": "12/25",
+      "cvv": "123"
+    },
+    {
+      "name": "Debit Card",
+      "cardNumber": "5555555555554444",
+      "expiry": "06/26",
+      "cvv": "456"
+    }
+  ],
+  "searchTerms": [
+    "Tomato",
+    "Broccoli",
+    "Cucumber",
+    "Carrot",
+    "Spinach",
+    "Bean",
+    "Potato",
+    "Onion",
+    "Lettuce",
+    "Pepper"
+  ],
+  "promoCodes": [
+    {
+      "code": "SAVE10",
+      "discount": 10
+    },
+    {
+      "code": "SAVE20",
+      "discount": 20
+    },
+    {
+      "code": "WELCOME5",
+      "discount": 5
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "name": "playwright-pom-framework",
+  "version": "1.0.0",
+  "description": "Playwright JavaScript POM Framework for Rahul Shetty Academy Selenium Practice",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:headed": "playwright test --headed",
+    "test:chrome": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:ui-tests": "playwright test --grep @ui",
+    "test:edge-cases": "playwright test --grep @edge-cases",
+    "test:performance": "playwright test --grep @performance",
+    "test:load": "playwright test --grep @load",
+    "test:checkout": "playwright test --grep @checkout",
+    "test:security": "playwright test --grep @security",
+    "test:accessibility": "playwright test --grep @accessibility",
+    "test:compliance": "playwright test --grep @compliance",
+    "test:all": "playwright test --grep @",
+    "report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "automation",
+    "testing",
+    "pom",
+    "e2e"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.8.0",
+    "@playwright/test": "^1.40.0",
+    "dotenv": "^16.3.1"
+  }
+}

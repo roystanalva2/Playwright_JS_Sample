@@ -1,0 +1,16 @@
+node_modules/
+test-results/
+playwright-report/
+*.log
+.DS_Store
+.env.local
+dist/
+build/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.nyc_output/
+coverage/
+.test-cache/

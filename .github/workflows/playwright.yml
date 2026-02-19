@@ -1,0 +1,150 @@
+# GitHub Actions Workflow for Playwright Tests
+
+name: Playwright Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run tests daily at 2 AM UTC
+    - cron: '0 2 * * *'
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [16.x, 18.x]
+        test-category:
+          - ui
+          - security
+          - accessibility
+          - performance
+          - checkout
+
+    name: "Tests: Node ${{ matrix.node-version }} - ${{ matrix.test-category }}"
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps
+
+    - name: Run ${{ matrix.test-category }} tests
+      run: npm run test:${{ matrix.test-category }}
+      env:
+        BASE_URL: https://rahulshettyacademy.com/seleniumPractise
+        HEADLESS: true
+        
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-${{ matrix.node-version }}-${{ matrix.test-category }}
+        path: test-results/
+        retention-days: 30
+
+    - name: Upload test report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: playwright-report-${{ matrix.node-version }}-${{ matrix.test-category }}
+        path: playwright-report/
+        retention-days: 30
+
+    - name: Publish test report
+      if: always()
+      uses: dorny/test-reporter@v1
+      with:
+        name: Test Results - Node ${{ matrix.node-version }} - ${{ matrix.test-category }}
+        path: 'test-results/junit/results.xml'
+        reporter: 'java-junit'
+
+  security-scan:
+    runs-on: ubuntu-latest
+    name: Security & Performance Report
+    needs: test
+    if: always()
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright
+      run: npx playwright install --with-deps
+
+    - name: Run security tests
+      run: npm run test:security
+      continue-on-error: true
+
+    - name: Run performance tests
+      run: npm run test:performance
+      continue-on-error: true
+
+    - name: Run compliance tests
+      run: npm run test:compliance
+      continue-on-error: true
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: artifacts/
+
+    - name: Generate summary
+      if: always()
+      run: |
+        echo "## Test Summary" >> $GITHUB_STEP_SUMMARY
+        echo "✅ Tests completed" >> $GITHUB_STEP_SUMMARY
+        echo "📊 Reports available in artifacts" >> $GITHUB_STEP_SUMMARY
+
+  notification:
+    runs-on: ubuntu-latest
+    name: Send Notifications
+    needs: [test, security-scan]
+    if: always()
+
+    steps:
+    - name: Slack notification
+      if: failure()
+      uses: slackapi/slack-github-action@v1
+      with:
+        payload: |
+          {
+            "text": "Playwright Tests Failed",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "❌ Tests failed in ${{ github.repository }}\n*Commit:* ${{ github.sha }}\n*Branch:* ${{ github.ref_name }}"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
