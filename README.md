@@ -1,5 +1,7 @@
 # Playwright JavaScript POM Framework - Rahul Shetty Academy
 
+[![Playwright Tests](https://github.com/roystanalva2/Playwright_JS_Sample/actions/workflows/playwright-tests.yml/badge.svg)](https://github.com/roystanalva2/Playwright_JS_Sample/actions/workflows/playwright-tests.yml)
+
 A comprehensive Playwright JavaScript testing framework for [Rahul Shetty Academy Selenium Practice](https://rahulshettyacademy.com/seleniumPractise) covering all types of testing scenarios.
 
 ## 📋 Overview
